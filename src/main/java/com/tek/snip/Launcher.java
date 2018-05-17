@@ -3,6 +3,7 @@ package com.tek.snip;
 import java.awt.event.KeyEvent;
 
 import com.tek.snip.man.CloudManager;
+import com.tek.snip.man.FileManager;
 import com.tek.snip.man.KeyManager;
 import com.tek.snip.man.SnipManager;
 import com.tek.snip.overlay.Overlay;
@@ -16,27 +17,31 @@ public class Launcher {
 		//Launch global managers
 		new KeyManager();
 		new SnipManager();
+		new FileManager();
 		new CloudManager();
 		
 		//Open snipper overlay
-		KeyManager.getInstance().addKeyBind(KeyEvent.VK_NUMPAD7, () -> {
+		KeyManager.getInstance().addKeyBind(KeyEvent.VK_7, () -> {
 			Overlay.open();
 		});
 		
 		//Close snipper overlay
-		KeyManager.getInstance().addKeyBind(KeyEvent.VK_NUMPAD8, () -> {
+		KeyManager.getInstance().addKeyBind(KeyEvent.VK_8, () -> {
 			Overlay.close();
 		});
 		
 		//GUI hotkey
-		KeyManager.getInstance().addKeyBind(KeyEvent.VK_NUMPAD9, () -> {
+		KeyManager.getInstance().addKeyBind(KeyEvent.VK_9, () -> {
 			Platform.runLater(() -> {
 				GUI.getInstance().getWindow().show();
 			});
 		});
 		
 		//Initialize GUI
-		GUI.main(new String[0]);
+		Runnable r = () -> {
+			GUI.main(new String[0]);
+		};
+		new Thread(r).start();
 	}
 	
 	public void stop() {

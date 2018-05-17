@@ -1,7 +1,10 @@
 package com.tek.snip.ui;
 
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
+import com.tek.snip.man.CloudManager;
+import com.tek.snip.man.FileManager;
 import com.tek.snip.man.SnipManager;
 import com.tek.snip.objects.Snip;
 import com.tek.snip.util.Util;
@@ -12,6 +15,8 @@ import javafx.animation.Timeline;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
@@ -26,8 +31,17 @@ public class MainController {
 	private static MainController instance;
 	private ImageView selected;
 	
+	@FXML
+	private MenuItem itemSave;
+	
     @FXML
     private MenuItem itemSaveAll;
+    
+    @FXML
+	private MenuItem itemUpload;
+	
+    @FXML
+    private MenuItem itemClear;
 
     @FXML
     private VBox paneContent;
@@ -39,6 +53,8 @@ public class MainController {
 	public void initialize() {
 		instance = this;
 		
+		paneContent.setAlignment(Pos.TOP_LEFT);
+		
 		paneScroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 		paneScroll.addEventFilter(ScrollEvent.SCROLL, e -> {
 			if(e.getDeltaX() != 0) {
@@ -46,8 +62,27 @@ public class MainController {
 			}
 		});
 		
+		itemSave.setOnAction(e -> {
+			FileManager.getInstance().save();
+		});
+		
+		itemSaveAll.setOnAction(e -> {
+			FileManager.getInstance().saveAll();
+		});
+		
+		itemUpload.setOnAction(e -> {
+			CloudManager.getInstance().upload();
+		});
+		
+		itemClear.setOnAction(e -> {
+			SnipManager.getInstance().clear();
+			selected = null;
+		});
+		
 		updateSnips();
 	}
+	
+	public ArrayList<ImageView> images = new ArrayList<ImageView>();
 	
 	public ImageView process(BufferedImage image) {
 		ImageView view = new ImageView(SwingFXUtils.toFXImage(image, null));
@@ -58,14 +93,30 @@ public class MainController {
 		view.addEventHandler(MouseEvent.MOUSE_PRESSED, e -> {
 			Util.toClipboard(image);
 			
+			Util.showPopupMessage("Copied to your clipboard", GUI.getInstance().getWindow());
+			
 			view.setOpacity(0.25);
+			
+			for(ImageView img : this.images) {
+				if(img != view) {
+					Timeline timeline = new Timeline();
+					timeline.setCycleCount(1);
+					timeline.setAutoReverse(false);
+					KeyValue kv = new KeyValue(img.rotateProperty(), 0);
+					KeyFrame kf = new KeyFrame(Duration.millis(250), kv);
+					timeline.getKeyFrames().add(kf);
+					timeline.play();
+				}
+			}
 			
 			Timeline timeline = new Timeline();
 			timeline.setCycleCount(1);
 			timeline.setAutoReverse(false);
 			KeyValue kv = new KeyValue(view.opacityProperty(), 1);
-			KeyFrame kf = new KeyFrame(Duration.millis(500), kv);
-			timeline.getKeyFrames().add(kf);
+			KeyFrame kf = new KeyFrame(Duration.millis(250), kv);
+			KeyValue kv1 = new KeyValue(view.rotateProperty(), 3);
+			KeyFrame kf1 = new KeyFrame(Duration.millis(250), kv1);
+			timeline.getKeyFrames().addAll(kf, kf1);
 			timeline.play();
 			
 			selected = view;
@@ -75,7 +126,13 @@ public class MainController {
 	}
 	
 	public void updateSnips() {
+		images.clear();
 		paneContent.getChildren().clear();
+		
+		Label label = new Label("Taken Snips (" + SnipManager.getInstance().getLoaded().size() + ")");
+		label.setStyle("-fx-font-size: 24px;");
+		VBox.setMargin(label, new Insets(10, 10, 10, 10));
+		paneContent.getChildren().add(label);
 		
 		HBox hbox = null;
 		int i1 = 0;
@@ -89,6 +146,7 @@ public class MainController {
 			ImageView image = process(snip.getImage());
 			
 			hbox.getChildren().add(image);
+			images.add(image);
 			
 			i++;
 			i1++;

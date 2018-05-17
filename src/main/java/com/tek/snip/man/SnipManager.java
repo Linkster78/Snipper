@@ -26,6 +26,14 @@ public class SnipManager {
 		});
 	}
 	
+	public void clear() {
+		loaded.clear();
+		
+		Platform.runLater(() -> {
+			MainController.getInstance().updateSnips();
+		});
+	}
+	
 	public ArrayList<Snip> getLoaded() {
 		return loaded;
 	}

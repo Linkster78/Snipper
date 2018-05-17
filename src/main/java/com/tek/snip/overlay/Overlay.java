@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.GraphicsDevice;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -14,7 +13,10 @@ import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
 import com.tek.snip.man.SnipManager;
+import com.tek.snip.util.PopupBuilder;
 import com.tek.snip.util.Util;
+
+import javafx.application.Platform;
 
 @SuppressWarnings({ "deprecation", "serial" })
 public class Overlay extends JFrame implements MouseListener, MouseMotionListener{
@@ -97,9 +99,12 @@ public class Overlay extends JFrame implements MouseListener, MouseMotionListene
 		BufferedImage screenshot = Util.takeScreenshot(r);
 		
 		if(screenshot != null) {
+			Platform.runLater(() -> {
+				PopupBuilder.showPopup("Snip!", "Your screenshot has been copied to your clipboard");
+			});
+			
 			Util.toClipboard(screenshot);
 			SnipManager.getInstance().add(screenshot);
-			Toolkit.getDefaultToolkit().beep();
 			Overlay.close();
 			return;
 		}
