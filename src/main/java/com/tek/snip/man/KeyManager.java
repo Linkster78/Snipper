@@ -60,6 +60,14 @@ public class KeyManager {
 		keybinds.put(vk, callback);
 	}
 	
+	public HashMap<Integer, Callback> getKeybinds() {
+		return keybinds;
+	}
+	
+	public HashMap<Integer, Boolean> getKeystates() {
+		return keystates;
+	}
+	
 	public boolean getKey(int vk) {
 		int i = user32.GetKeyState(vk) & 0xffff;
 		return i >= 100;

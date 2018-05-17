@@ -4,6 +4,9 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import com.tek.snip.objects.Snip;
+import com.tek.snip.ui.MainController;
+
+import javafx.application.Platform;
 
 public class SnipManager {
 	
@@ -17,6 +20,10 @@ public class SnipManager {
 	
 	public void add(BufferedImage image) {
 		loaded.add(new Snip(image));
+		
+		Platform.runLater(() -> {
+			MainController.getInstance().updateSnips();
+		});
 	}
 	
 	public ArrayList<Snip> getLoaded() {

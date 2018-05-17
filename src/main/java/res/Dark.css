@@ -1,0 +1,84 @@
+@import 'https://fonts.googleapis.com/css?family=Open+Sans';
+
+.root{
+	-fx-font-family: 'Open Sans', sans-serif;
+	-fx-color: #ecf0f1;
+	-fx-text-fill: #ecf0f1;
+	-fx-font-size: 16px;
+	-fx-background-color: #34495e;
+}
+
+.border-pane{
+	-fx-background-color: #34495e;
+}
+
+.scroll-pane{
+	-fx-background-color: #34495e;
+	-fx-background: #34495e;
+}
+
+.scroll-bar:horizontal, .scroll-bar:vertical{
+	-fx-background-color: #34495e;
+}
+
+.increment-button, .decrement-button{
+	-fx-background-color: transparent;
+}
+
+.scroll-bar:horizontal .track, .scroll-bar:vertical .track{
+	-fx-background-color: transparent;
+	-fx-border-color: transparent;
+	-fx-background-radius: 0em;
+}
+
+.scroll-bar:horizontal .thumb, .scroll-bar:vertical .thumb{
+	-fx-background-color: #8395a7;
+	-fx-background-radius: 5em;
+}
+
+.scroll-pane > .corner {
+	-fx-background-color: #34495e;
+}
+
+.flow-pane{
+	-fx-background-color: #34495e;
+}
+
+.anchor-pane{
+	-fx-background-color: #34495e;
+}
+
+.menu-bar{
+	-fx-background-color: #2c3e50;
+}
+
+.menu-button{
+	-fx-background-color: #2c3e50;
+	-fx-text-fill: #ecf0f1;
+}
+
+*.popup-menu{
+	-fx-background-color: #263d54;
+	-fx-text-fill: #ecf0f1;
+}
+
+.menu{
+	-fx-background-color: #2c3e50;
+}
+
+.context-menu{
+	-fx-background-color: #263d54;
+}
+
+*.menu-item{
+	-fx-background-color: #263d54;
+	-fx-text-fill: #ecf0f1;
+}
+
+.label{
+	-fx-text-fill: #ecf0f1;
+}
+
+.background{
+	-fx-background-color: #34495e;
+}

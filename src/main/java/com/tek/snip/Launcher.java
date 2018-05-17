@@ -6,6 +6,9 @@ import com.tek.snip.man.CloudManager;
 import com.tek.snip.man.KeyManager;
 import com.tek.snip.man.SnipManager;
 import com.tek.snip.overlay.Overlay;
+import com.tek.snip.ui.GUI;
+
+import javafx.application.Platform;
 
 public class Launcher {
 	
@@ -25,12 +28,21 @@ public class Launcher {
 			Overlay.close();
 		});
 		
-		//Program Kill-Switch (Incase something goes wrong)
+		//GUI hotkey
 		KeyManager.getInstance().addKeyBind(KeyEvent.VK_NUMPAD9, () -> {
-			Overlay.close();
-			KeyManager.getInstance().close();
-			System.exit(-1);
+			Platform.runLater(() -> {
+				GUI.getInstance().getWindow().show();
+			});
 		});
+		
+		//Initialize GUI
+		GUI.main(new String[0]);
+	}
+	
+	public void stop() {
+		KeyManager.getInstance().close();
+		GUI.getInstance().close();
+		Overlay.close();
 	}
 	
 	public static void main(String[] args) {

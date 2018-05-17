@@ -9,6 +9,9 @@ import java.awt.Robot;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 import com.tek.snip.objects.ImageSelection;
 
@@ -32,11 +35,21 @@ public class Util {
 	}
 	
 	public static BufferedImage takeScreenshot(Rectangle area) {
+		if(area.getWidth() <= 0) return null;
+		if(area.getHeight() <= 0) return null;
+		
 		try {
 			return new Robot().createScreenCapture(area);
 		} catch (AWTException e) {
 			return null;
 		}
+	}
+	
+	public static BufferedImage fromPath(String path) {
+		try {
+			return ImageIO.read(Util.class.getResourceAsStream(path));
+		} catch (IOException e) { e.printStackTrace(); }
+		return null;
 	}
 	
 }

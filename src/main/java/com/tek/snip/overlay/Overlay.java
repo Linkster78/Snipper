@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.GraphicsDevice;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -98,6 +99,7 @@ public class Overlay extends JFrame implements MouseListener, MouseMotionListene
 		if(screenshot != null) {
 			Util.toClipboard(screenshot);
 			SnipManager.getInstance().add(screenshot);
+			Toolkit.getDefaultToolkit().beep();
 			Overlay.close();
 			return;
 		}
@@ -113,7 +115,9 @@ public class Overlay extends JFrame implements MouseListener, MouseMotionListene
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-		Overlay.close();
+		if(!getBounds().contains(e.getLocationOnScreen())) {
+			Overlay.close();
+		}
 	}
 
 }
