@@ -1,17 +1,22 @@
 package com.tek.snip.overlay;
 
 import java.awt.Color;
-import java.awt.Event;
-import java.awt.Graphics;
+import java.awt.GraphicsDevice;
 import java.awt.Point;
-import java.awt.Window;
+import java.awt.Rectangle;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.awt.image.BufferedImage;
 
+import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
-import com.tek.snip.util.Reference;
+import com.tek.snip.man.SnipManager;
+import com.tek.snip.util.Util;
 
-@SuppressWarnings("deprecation")
-public class Overlay extends Window{
+@SuppressWarnings({ "deprecation", "serial" })
+public class Overlay extends JFrame implements MouseListener, MouseMotionListener{
 
 	public static Overlay instance;
 	
@@ -33,54 +38,82 @@ public class Overlay extends Window{
 	}
 	
 	//Actual class code
-	
-	private static final long serialVersionUID = 1L;
 
+	private OverlayComponent comp;
 	private Point origin;
 	
 	public Overlay() {
-		super(null);
-		
 		setAlwaysOnTop(true);
 		setBounds(getGraphicsConfiguration().getBounds());
+		setUndecorated(true);
 		setBackground(new Color(0, true));
+		pack();
 		setVisible(true);
 		
 		setIgnoreRepaint(false);
+		
+		GraphicsDevice gd = Util.currentDevice();
+		setLocation(gd.getDefaultConfiguration().getBounds().x, getY());
+		setSize(gd.getDisplayMode().getWidth(), gd.getDisplayMode().getHeight());
+		
+		comp = new OverlayComponent();
+		add(comp);
+		
+		addMouseListener(this);
+		addMouseMotionListener(this);
 	}
 	
 	@Override
-	public boolean mouseDown(Event evt, int x, int y) {
-		origin = new Point(x, y);
-		return super.mouseDown(evt, x, y);
+	public void mouseDragged(MouseEvent e) { 
+		this.repaint();
 	}
-	
+
 	@Override
-	public boolean mouseUp(Event evt, int x, int y) {
+	public void mouseMoved(MouseEvent e) {
+		this.repaint();
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) { }
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		origin = new Point(e.getX(), e.getY());
+		comp.setOrigin(origin);
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		Point n = this.getMousePosition();
+		int x = (int)(Math.min(n.getX(), origin.getX()) + getLocation().getX());
+		int y = (int) Math.min(n.getY(), origin.getY());
+		int w = (int) Math.abs(n.getX() - origin.getX());
+		int h = (int) Math.abs(n.getY() - origin.getY());
+		Rectangle r = new Rectangle(x, y, w, h);
+		
+		this.setVisible(false);
+		
+		BufferedImage screenshot = Util.takeScreenshot(r);
+		
+		if(screenshot != null) {
+			Util.toClipboard(screenshot);
+			SnipManager.getInstance().add(screenshot);
+			Overlay.close();
+			return;
+		}
+		
+		this.setVisible(true);
+		
 		origin = null;
-		return super.mouseUp(evt, x, y);
+		comp.setOrigin(null);
 	}
-	
+
 	@Override
-	public boolean mouseMove(Event evt, int x, int y) {
-		return super.mouseMove(evt, x, y);
-	}
-	
+	public void mouseEntered(MouseEvent e) { }
+
 	@Override
-	public void paint(Graphics g) {
-		super.paint(g);
-		g.setColor(Reference.DARK_OVERLAY);
-		g.fillRect(0, 0, 500, 500);
-		if(origin == null) return;
-		g.setColor(Reference.LIGHT_OVERLAY);
-		g.clearRect(origin.x, origin.y, this.getMousePosition().x, this.getMousePosition().y);
-		g.fillRect(origin.x, origin.y, this.getMousePosition().x, this.getMousePosition().y);
-	}
-	
-	@Override
-	public void update(Graphics g) {
-		super.update(g);
-		paint(g);
+	public void mouseExited(MouseEvent e) {
+		Overlay.close();
 	}
 
 }
