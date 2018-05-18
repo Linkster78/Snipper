@@ -55,6 +55,20 @@ public class GUI extends Application{
         return null;
 	}
 	
+	public Scene getFXMLSettings() {
+		try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(GUI.class.getResource("SettingsScene.fxml"));
+            BorderPane borderPane = (BorderPane) loader.load();
+            
+           return new Scene(borderPane);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
+        return null;
+	}
+	
 	public Stage getWindow() {
 		return window;
 	}

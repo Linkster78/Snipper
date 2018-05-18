@@ -1,5 +1,11 @@
 package com.tek.snip;
 
+import java.awt.AWTException;
+import java.awt.MenuItem;
+import java.awt.PopupMenu;
+import java.awt.SystemTray;
+import java.awt.TrayIcon;
+
 import com.tek.snip.man.CloudManager;
 import com.tek.snip.man.FileManager;
 import com.tek.snip.man.KeyManager;
@@ -7,20 +13,30 @@ import com.tek.snip.man.SnipManager;
 import com.tek.snip.overlay.Overlay;
 import com.tek.snip.ui.GUI;
 import com.tek.snip.util.Reference;
+import com.tek.snip.util.Util;
 
 import javafx.application.Platform;
 
 public class Launcher {
 	
+	KeyManager keyMan;
+	SnipManager snipMan;
+	FileManager fileMan;
+	CloudManager cloudMan;
+	
 	public void start() {
 		//Launch global managers
-		new KeyManager();
-		new SnipManager();
-		new FileManager();
-		new CloudManager();
+		keyMan = new KeyManager();
+		snipMan = new SnipManager();
+		fileMan = new FileManager();
+		cloudMan = new CloudManager();
 		
+		//Load hotkeys from settings
+		FileManager.getInstance().loadHotkeys();
+		
+		//Register keybinds
 		KeyManager.getInstance().addKeyHandler(i -> {
-			if(i == Reference.HOTKEY_SNAPSHOT) {
+			if(i == Reference.HOTKEY_SNIP) {
 				Overlay.open();
 			}else if(i == Reference.HOTKEY_GUI) {
 				Platform.runLater(() -> {
@@ -28,6 +44,39 @@ public class Launcher {
 				});
 			}
 		});
+		
+		//Initialize Tray Icon
+		if(SystemTray.isSupported()) {
+			PopupMenu popupmenu = new PopupMenu("Options");
+			
+			MenuItem snip = new MenuItem("Snip");
+			snip.setActionCommand("snip");
+			
+			MenuItem gui = new MenuItem("GUI");
+			gui.setActionCommand("gui");
+			
+			snip.addActionListener(l -> {
+				Overlay.open();
+			});
+			
+			gui.addActionListener(l -> {
+				Platform.runLater(() -> {
+					GUI.getInstance().getWindow().show();
+				});
+			});
+			
+			
+			popupmenu.add(snip);
+			popupmenu.add(gui);
+			
+			SystemTray tray = SystemTray.getSystemTray();
+			TrayIcon trayIcon = new TrayIcon(Util.fromPath("/res/icon_small.png"), "Snipper", popupmenu);
+			trayIcon.setImageAutoSize(true);
+			
+			try {
+				tray.add(trayIcon);
+			} catch (AWTException e1) { e1.printStackTrace(); }
+		}
 		
 		//Initialize GUI
 		Runnable r = () -> {

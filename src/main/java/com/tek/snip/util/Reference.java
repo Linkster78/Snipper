@@ -14,7 +14,7 @@ public class Reference {
 	public static final String SECRET_CLOUDINARY = "yaHGmqfuxexSpkPJC_FxCF1RksU";
 	public static final String NAME_CLOUDINARY   = "dqsuqtudx";
 	
-	public static int HOTKEY_SNAPSHOT = KeyEvent.VK_NUMPAD8;
-	public static int HOTKEY_GUI      = KeyEvent.VK_NUMPAD9;
+	public static int HOTKEY_SNIP = KeyEvent.VK_NUMPAD8;
+	public static int HOTKEY_GUI  = KeyEvent.VK_NUMPAD9;
 	
 }

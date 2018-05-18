@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="181.0" prefWidth="379.0" stylesheets="@../../../../res/Dark.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tek.snip.ui.SettingsController">
+   <bottom>
+      <VBox alignment="CENTER" prefHeight="44.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+         <children>
+            <JFXButton fx:id="btnBack" prefHeight="34.0" prefWidth="130.0" text="Back" />
+         </children>
+      </VBox>
+   </bottom>
+   <center>
+      <VBox prefHeight="243.0" prefWidth="379.0" BorderPane.alignment="CENTER">
+         <children>
+            <HBox alignment="CENTER" prefHeight="66.0" prefWidth="379.0">
+               <children>
+                  <Label text="Snip Hotkey:       " />
+                  <JFXButton fx:id="btnSnip" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="45.0" prefWidth="379.0">
+               <children>
+                  <Label text="GUI Hotkey:         " />
+                  <JFXButton fx:id="btnGui">
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                  </JFXButton>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </center>
+</BorderPane>

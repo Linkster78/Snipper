@@ -17,6 +17,8 @@ public class KeyManager {
 	private ArrayList<Callback<Integer>> keyhandlers = new ArrayList<Callback<Integer>>();
 	private volatile boolean closed = false;
 	
+	final int start = 0x08;
+	
 	public KeyManager() {
 		instance = this;
 		
@@ -24,7 +26,7 @@ public class KeyManager {
 	}
 	
 	public void initThread() {
-		for(int i = 0; i < 256; i++) {
+		for(int i = start; i < 256; i++) {
 			keystates.put(i, false);
 		}
 		
@@ -32,7 +34,7 @@ public class KeyManager {
 			while(true) {
 				if(closed) return;
 				
-				for(int i = 0; i < 256; i++) {
+				for(int i = start; i < 256; i++) {
 					boolean oldState = keystates.get(i);
 					boolean newState = getKey(i);
 					

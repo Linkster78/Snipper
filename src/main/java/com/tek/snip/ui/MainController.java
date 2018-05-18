@@ -34,17 +34,14 @@ public class MainController {
 	private static MainController instance;
 	private ImageView selected;
 	
-	@FXML
-	private MenuItem itemSave;
-	
     @FXML
     private MenuItem itemSaveAll;
-    
-    @FXML
-	private MenuItem itemUpload;
 	
     @FXML
     private MenuItem itemClear;
+    
+    @FXML
+    private MenuItem itemSettings;
 
     @FXML
     private VBox paneContent;
@@ -53,7 +50,7 @@ public class MainController {
     private ScrollPane paneScroll;
 	
 	@FXML
-	public void initialize() {
+	private void initialize() {
 		instance = this;
 		
 		paneContent.setAlignment(Pos.TOP_LEFT);
@@ -72,6 +69,10 @@ public class MainController {
 		itemClear.setOnAction(e -> {
 			SnipManager.getInstance().clear();
 			selected = null;
+		});
+		
+		itemSettings.setOnAction(e -> {
+			GUI.getInstance().getWindow().setScene(GUI.getInstance().getFXMLSettings());
 		});
 		
 		updateSnips();
@@ -128,6 +129,8 @@ public class MainController {
 	}
 	
 	public void updateSnips() {
+		if(SnipManager.getInstance() == null) return;
+		
 		images.clear();
 		paneContent.getChildren().clear();
 		

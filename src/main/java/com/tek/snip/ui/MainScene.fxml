@@ -19,6 +19,7 @@
             <Menu mnemonicParsing="false" text="Misc">
                <items>
                   <MenuItem fx:id="itemClear" mnemonicParsing="false" text="Clear" />
+                  <MenuItem fx:id="itemSettings" mnemonicParsing="false" text="Settings" />
                </items>
             </Menu>
         </menus>
