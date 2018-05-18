@@ -1,6 +1,11 @@
 package com.tek.snip.ui;
 
+import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.awt.print.PageFormat;
+import java.awt.print.Printable;
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
 import java.util.ArrayList;
 
 import com.tek.snip.man.CloudManager;
@@ -94,6 +99,25 @@ public class MainController {
 			CloudManager.getInstance().upload(view);
 		};
 		
+		Runnable print = () -> {
+			PrinterJob printJob = PrinterJob.getPrinterJob();
+			printJob.setPrintable(new Printable() {
+			        public int print(Graphics graphics, PageFormat pageFormat, int pageIndex) throws PrinterException {
+			                if (pageIndex != 0) {
+			                    return NO_SUCH_PAGE;
+			                }
+			                
+			                graphics.drawImage(image, 0, 0, image.getWidth(), image.getHeight(), null);
+			                return PAGE_EXISTS;
+			        }
+			});     
+			try {
+			    printJob.print();
+			} catch (PrinterException e1) {             
+			    e1.printStackTrace();
+			}
+		};
+		
 		Runnable show = () -> {
 			Util.showImage(view.getImage());
 		};
@@ -121,7 +145,7 @@ public class MainController {
 		});
 		
 		view.setOnContextMenuRequested(e -> {
-			Util.showContextMenu(view, new MenuOption("Save", save), new MenuOption("Upload", upload), new MenuOption("View Image", show), new MenuOption("Remove", remove));
+			Util.showContextMenu(view, new MenuOption("Save", save), new MenuOption("Upload", upload), new MenuOption("Print", print), new MenuOption("View Image", show), new MenuOption("Remove", remove));
 			e.consume();
 		});
 		
