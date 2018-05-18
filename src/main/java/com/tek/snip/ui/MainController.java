@@ -8,6 +8,7 @@ import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import java.util.ArrayList;
 
+import com.tek.snip.Launcher;
 import com.tek.snip.man.CloudManager;
 import com.tek.snip.man.FileManager;
 import com.tek.snip.man.SnipManager;
@@ -41,6 +42,9 @@ public class MainController {
 	
     @FXML
     private MenuItem itemSaveAll;
+    
+    @FXML
+    private MenuItem itemExit;
 	
     @FXML
     private MenuItem itemClear;
@@ -69,6 +73,10 @@ public class MainController {
 		
 		itemSaveAll.setOnAction(e -> {
 			FileManager.getInstance().saveAll();
+		});
+		
+		itemExit.setOnAction(e -> {
+			Launcher.stop();
 		});
 		
 		itemClear.setOnAction(e -> {

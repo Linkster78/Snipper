@@ -55,6 +55,9 @@ public class Launcher {
 			MenuItem gui = new MenuItem("GUI");
 			gui.setActionCommand("gui");
 			
+			MenuItem exit = new MenuItem("Exit");
+			exit.setActionCommand("exit");
+			
 			snip.addActionListener(l -> {
 				Overlay.open();
 			});
@@ -65,9 +68,13 @@ public class Launcher {
 				});
 			});
 			
+			exit.addActionListener(l -> {
+				Launcher.stop();
+			});
 			
 			popupmenu.add(snip);
 			popupmenu.add(gui);
+			popupmenu.add(exit);
 			
 			SystemTray tray = SystemTray.getSystemTray();
 			TrayIcon trayIcon = new TrayIcon(Util.fromPath("/res/icon_small.png"), "Snipper", popupmenu);
@@ -85,9 +92,16 @@ public class Launcher {
 		new Thread(r).start();
 	}
 	
-	public void stop() {
+	public static void stop() {
 		KeyManager.getInstance().close();
-		GUI.getInstance().close();
+		
+		Platform.runLater(() -> {
+			try {
+				GUI.getInstance().stop();
+				System.exit(-1);
+			} catch (Exception e) { }
+		});
+		
 		Overlay.close();
 	}
 	

@@ -3,6 +3,14 @@ This is a very simple SnippingTool like application that allows to take quick an
 
 ## Downloads
 
+**1.1**
+
+Download [here](https://github.com/RedstoneTek/Snipper/blob/master/releases/Snipper_1.1.jar?raw=true)
+
+> Added Exit Option
+
+> Added Print Option in right click Context Menu
+
 **1.0**
 
 Download [here](https://github.com/RedstoneTek/Snipper/blob/master/releases/Snipper_1.0.jar?raw=true)
@@ -23,4 +31,4 @@ Don't have a numpad ? Simply go to your Tray (Arrow facing upwards on your taskb
 
 In order to save and upload snips, open the GUI and simply click on a Snip to copy it OR right click it to access many options.
 
-On the top menu bar, there is also an option to bulk-save snips as well as modify Hotkeys and Clear the snip list
+On the top menu bar, there is also an option to bulk-save snips, an option to close the process as well as modify Hotkeys and Clear the snip list
