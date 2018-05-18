@@ -3,17 +3,20 @@ This is a very simple SnippingTool like application that allows to take quick an
 
 ## Downloads
 
-###### 1.0
+**1.0**
+
 Download [here](https://github.com/RedstoneTek/Snipper/blob/master/releases/Snipper_1.0.jar?raw=true)
 
 ## Instructions
 
-###### Installation
+**Installation**
+
 - Download the jarfile above
 - Place the jarfile into a folder
 - Run the jarfile
 
-###### Usage
+**Usage**
+
 By default, the key for taking a "Snip" is NUMPAD8 and the key to open the GUI is NUMPAD9 but those can be changed in the settings menu.
 
 Don't have a numpad ? Simply go to your Tray (Arrow facing upwards on your taskbar) and right click on the Snipper icon -> GUI
