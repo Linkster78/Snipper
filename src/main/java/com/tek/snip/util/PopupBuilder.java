@@ -20,9 +20,10 @@ public class PopupBuilder {
 	public static void showPopup(String title, String message) {
 		Stage stage = new Stage();
 		stage.setAlwaysOnTop(true);
+		stage.setOpacity(0.75);
 		stage.initStyle(StageStyle.UNDECORATED);
 		
-		int width = getWidth(message) + 20;
+		int width = getWidth(message) + 40;
 		int height = 60;
 		
 		Label lbltitle = new Label(title);
@@ -39,10 +40,10 @@ public class PopupBuilder {
 		Scene scene = new Scene(root, width, height);
 		
 		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
-		 
+		
 		stage.setX(primaryScreenBounds.getMinX() + primaryScreenBounds.getWidth() - width);
 		stage.setY(primaryScreenBounds.getMinY() + primaryScreenBounds.getHeight() - height);
-		
+			
 		stage.setScene(scene);
 		stage.setOpacity(0);
 		stage.show();
@@ -58,7 +59,7 @@ public class PopupBuilder {
 			stage.hide();
 			stage.close();
 		});
-		KeyFrame triggerOut = new KeyFrame(Duration.millis(1750), e -> {
+		KeyFrame triggerOut = new KeyFrame(Duration.millis(1250), e -> {
 			Timeline t = new Timeline();
 			t.setCycleCount(1);
 			t.getKeyFrames().addAll(opacityOut, hide);

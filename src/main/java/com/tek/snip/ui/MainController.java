@@ -6,7 +6,9 @@ import java.util.ArrayList;
 import com.tek.snip.man.CloudManager;
 import com.tek.snip.man.FileManager;
 import com.tek.snip.man.SnipManager;
+import com.tek.snip.objects.MenuOption;
 import com.tek.snip.objects.Snip;
+import com.tek.snip.util.PopupBuilder;
 import com.tek.snip.util.Util;
 
 import javafx.animation.KeyFrame;
@@ -20,6 +22,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.HBox;
@@ -62,16 +65,8 @@ public class MainController {
 			}
 		});
 		
-		itemSave.setOnAction(e -> {
-			FileManager.getInstance().save();
-		});
-		
 		itemSaveAll.setOnAction(e -> {
 			FileManager.getInstance().saveAll();
-		});
-		
-		itemUpload.setOnAction(e -> {
-			CloudManager.getInstance().upload();
 		});
 		
 		itemClear.setOnAction(e -> {
@@ -90,36 +85,43 @@ public class MainController {
 		view.setFitHeight(140);
 		HBox.setMargin(view, new Insets(0, 10, 0, 0));
 		
-		view.addEventHandler(MouseEvent.MOUSE_PRESSED, e -> {
-			Util.toClipboard(image);
-			
-			Util.showPopupMessage("Copied to your clipboard", GUI.getInstance().getWindow());
-			
-			view.setOpacity(0.25);
-			
-			for(ImageView img : this.images) {
-				if(img != view) {
-					Timeline timeline = new Timeline();
-					timeline.setCycleCount(1);
-					timeline.setAutoReverse(false);
-					KeyValue kv = new KeyValue(img.rotateProperty(), 0);
-					KeyFrame kf = new KeyFrame(Duration.millis(250), kv);
-					timeline.getKeyFrames().add(kf);
-					timeline.play();
-				}
+		Runnable save = () -> {
+			FileManager.getInstance().save(view);
+		};
+		
+		Runnable upload = () -> {
+			CloudManager.getInstance().upload(view);
+		};
+		
+		Runnable show = () -> {
+			Util.showImage(view.getImage());
+		};
+		
+		Runnable remove = () -> {
+			SnipManager.getInstance().remove(view.getImage());
+		};
+		
+		view.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
+			if(e.getButton() == MouseButton.PRIMARY) {
+				Util.toClipboard(image);
+				PopupBuilder.showPopup("Snip!", "Copied to your clipboard");
+				
+				view.setOpacity(0.25);
+				
+				Timeline timeline = new Timeline();
+				timeline.setCycleCount(1);
+				timeline.setAutoReverse(false);
+				KeyValue kv = new KeyValue(view.opacityProperty(), 1);
+				KeyFrame kf = new KeyFrame(Duration.millis(250), kv);
+				
+				timeline.getKeyFrames().add(kf);
+				timeline.play();
 			}
-			
-			Timeline timeline = new Timeline();
-			timeline.setCycleCount(1);
-			timeline.setAutoReverse(false);
-			KeyValue kv = new KeyValue(view.opacityProperty(), 1);
-			KeyFrame kf = new KeyFrame(Duration.millis(250), kv);
-			KeyValue kv1 = new KeyValue(view.rotateProperty(), 3);
-			KeyFrame kf1 = new KeyFrame(Duration.millis(250), kv1);
-			timeline.getKeyFrames().addAll(kf, kf1);
-			timeline.play();
-			
-			selected = view;
+		});
+		
+		view.setOnContextMenuRequested(e -> {
+			Util.showContextMenu(view, new MenuOption("Save", save), new MenuOption("Upload", upload), new MenuOption("View Image", show), new MenuOption("Remove", remove));
+			e.consume();
 		});
 		
 		return view;

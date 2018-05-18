@@ -1,7 +1,7 @@
 package com.tek.snip.callback;
 
-public interface Callback {
+public interface Callback<T> {
 	
-	public void call();
+	public void call(T t);
 	
 }

@@ -1,5 +1,6 @@
 package com.tek.snip.man;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.sun.jna.Native;
@@ -11,8 +12,9 @@ public class KeyManager {
 	private static KeyManager instance;
 	
 	private User32 user32 = (User32)Native.loadLibrary("user32", User32.class);
-	private HashMap<Integer, Callback> keybinds = new HashMap<Integer, Callback>();
+	private HashMap<Integer, Runnable> keybinds = new HashMap<Integer, Runnable>();
 	private HashMap<Integer, Boolean> keystates = new HashMap<Integer, Boolean>();
+	private ArrayList<Callback<Integer>> keyhandlers = new ArrayList<Callback<Integer>>();
 	private volatile boolean closed = false;
 	
 	public KeyManager() {
@@ -35,8 +37,13 @@ public class KeyManager {
 					boolean newState = getKey(i);
 					
 					if(oldState != newState && newState) {
+						//PRESS
 						if(keybinds.containsKey(i)) {
-							keybinds.get(i).call();
+							keybinds.get(i).run();
+						}
+						
+						for(Callback<Integer> c : keyhandlers) {
+							c.call(i);
 						}
 					}
 					
@@ -56,16 +63,24 @@ public class KeyManager {
 		return closed;
 	}
 	
-	public void addKeyBind(int vk, Callback callback) {
-		keybinds.put(vk, callback);
+	public void addKeyBind(int vk, Runnable r) {
+		keybinds.put(vk, r);
 	}
 	
-	public HashMap<Integer, Callback> getKeybinds() {
+	public void addKeyHandler(Callback<Integer> callback) {
+		keyhandlers.add(callback);
+	}
+	
+	public HashMap<Integer, Runnable> getKeybinds() {
 		return keybinds;
 	}
 	
 	public HashMap<Integer, Boolean> getKeystates() {
 		return keystates;
+	}
+	
+	public ArrayList<Callback<Integer>> getKeyhandlers() {
+		return keyhandlers;
 	}
 	
 	public boolean getKey(int vk) {

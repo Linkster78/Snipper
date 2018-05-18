@@ -1,6 +1,7 @@
 package com.tek.snip.util;
 
 import java.awt.Color;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 
 public class Reference {
@@ -12,5 +13,8 @@ public class Reference {
 	public static final String KEY_CLOUDINARY    = "544234964797438";
 	public static final String SECRET_CLOUDINARY = "yaHGmqfuxexSpkPJC_FxCF1RksU";
 	public static final String NAME_CLOUDINARY   = "dqsuqtudx";
+	
+	public static int HOTKEY_SNAPSHOT = KeyEvent.VK_NUMPAD8;
+	public static int HOTKEY_GUI      = KeyEvent.VK_NUMPAD9;
 	
 }

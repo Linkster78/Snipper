@@ -8,8 +8,7 @@ import java.util.Map;
 import javax.imageio.ImageIO;
 
 import com.cloudinary.Cloudinary;
-import com.tek.snip.ui.GUI;
-import com.tek.snip.ui.MainController;
+import com.tek.snip.util.PopupBuilder;
 import com.tek.snip.util.Reference;
 import com.tek.snip.util.Util;
 
@@ -26,20 +25,13 @@ public class CloudManager {
 		instance = this;
 	}
 	
-	public void upload() {
-		ImageView img = MainController.getInstance().getSelected();
-		
-		if(img == null) {
-			Util.showPopupMessage("Error, please select an image", GUI.getInstance().getWindow());
-			return;
-		}
-		
+	public void upload(ImageView img) {
 		BufferedImage image = SwingFXUtils.fromFXImage(img.getImage(), null);
 		
 		String url = upload(image);
 		
 		Util.toClipboard(url);
-		Util.showPopupMessage("Uploaded to " + url + " | Copied url to clipboard", GUI.getInstance().getWindow());
+		PopupBuilder.showPopup("Snip!", "Copied the url to your clipboard");
 	}
 	
 	@SuppressWarnings("rawtypes")

@@ -5,8 +5,11 @@ import java.util.ArrayList;
 
 import com.tek.snip.objects.Snip;
 import com.tek.snip.ui.MainController;
+import com.tek.snip.util.Util;
 
 import javafx.application.Platform;
+import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.image.Image;
 
 public class SnipManager {
 	
@@ -20,6 +23,20 @@ public class SnipManager {
 	
 	public void add(BufferedImage image) {
 		loaded.add(new Snip(image));
+		
+		Platform.runLater(() -> {
+			MainController.getInstance().updateSnips();
+		});
+	}
+	
+	public void remove(Image image) {
+		for(Snip snip : new ArrayList<Snip>(loaded)) {
+			Image img = SwingFXUtils.toFXImage(snip.getImage(), null);
+			
+			if(Util.equalsImage(img, image)) {
+				loaded.remove(snip);
+			}
+		}
 		
 		Platform.runLater(() -> {
 			MainController.getInstance().updateSnips();

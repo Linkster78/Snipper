@@ -1,13 +1,12 @@
 package com.tek.snip;
 
-import java.awt.event.KeyEvent;
-
 import com.tek.snip.man.CloudManager;
 import com.tek.snip.man.FileManager;
 import com.tek.snip.man.KeyManager;
 import com.tek.snip.man.SnipManager;
 import com.tek.snip.overlay.Overlay;
 import com.tek.snip.ui.GUI;
+import com.tek.snip.util.Reference;
 
 import javafx.application.Platform;
 
@@ -20,21 +19,14 @@ public class Launcher {
 		new FileManager();
 		new CloudManager();
 		
-		//Open snipper overlay
-		KeyManager.getInstance().addKeyBind(KeyEvent.VK_7, () -> {
-			Overlay.open();
-		});
-		
-		//Close snipper overlay
-		KeyManager.getInstance().addKeyBind(KeyEvent.VK_8, () -> {
-			Overlay.close();
-		});
-		
-		//GUI hotkey
-		KeyManager.getInstance().addKeyBind(KeyEvent.VK_9, () -> {
-			Platform.runLater(() -> {
-				GUI.getInstance().getWindow().show();
-			});
+		KeyManager.getInstance().addKeyHandler(i -> {
+			if(i == Reference.HOTKEY_SNAPSHOT) {
+				Overlay.open();
+			}else if(i == Reference.HOTKEY_GUI) {
+				Platform.runLater(() -> {
+					GUI.getInstance().getWindow().show();
+				});
+			}
 		});
 		
 		//Initialize GUI
