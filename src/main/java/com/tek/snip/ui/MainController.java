@@ -95,9 +95,9 @@ public class MainController {
 	
 	public ImageView process(BufferedImage image) {
 		ImageView view = new ImageView(SwingFXUtils.toFXImage(image, null));
-		view.setFitWidth(140);
-		view.setFitHeight(140);
-		HBox.setMargin(view, new Insets(0, 10, 0, 0));
+		view.setFitWidth(130);
+		view.setFitHeight(130);
+		HBox.setMargin(view, new Insets(0, 5, 0, 5));
 		
 		Runnable save = () -> {
 			FileManager.getInstance().save(view);
@@ -177,7 +177,7 @@ public class MainController {
 		for(Snip snip : SnipManager.getInstance().getLoaded()) {
 			if(i == 0) {
 				hbox = new HBox();
-				VBox.setMargin(hbox, new Insets(0, 0, 10, 0));
+				VBox.setMargin(hbox, new Insets(0, 5, 10, 5));
 			}
 			
 			ImageView image = process(snip.getImage());

@@ -3,6 +3,12 @@ This is a very simple SnippingTool like application that allows to take quick an
 
 ## Downloads
 
+**1.2**
+
+Download [here](https://github.com/RedstoneTek/Snipper/blob/master/releases/Snipper_1.2.jar?raw=true)
+
+> Tweaked the GUI to make it look that much better(Alignment, dropshadow, margins, etc)
+
 **1.1**
 
 Download [here](https://github.com/RedstoneTek/Snipper/blob/master/releases/Snipper_1.1.jar?raw=true)
