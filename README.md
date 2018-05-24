@@ -3,6 +3,12 @@ This is a very simple SnippingTool like application that allows to take quick an
 
 ## Downloads
 
+**1.3 (Major Update)**
+
+Download [here](https://github.com/RedstoneTek/Snipper/blob/master/releases/Snipper_1.3.jar?raw=true)
+
+> Added a Built-In image editor! Available through RightClick -> Edit
+
 **1.2**
 
 Download [here](https://github.com/RedstoneTek/Snipper/blob/master/releases/Snipper_1.2.jar?raw=true)

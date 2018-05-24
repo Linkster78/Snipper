@@ -13,6 +13,10 @@
 	-fx-text-fill: #ecf0f1;
 }
 
+.button {
+	-fx-background-color: #2f3640;
+}
+
 .border-pane{
 	-fx-background-color: #353b48;
 }
@@ -90,6 +94,10 @@
 
 .background{
 	-fx-background-color: #353b48;
+}
+
+.header {
+	-fx-background-color: #2f3640;
 }
 
 .popup, .popup > .label{

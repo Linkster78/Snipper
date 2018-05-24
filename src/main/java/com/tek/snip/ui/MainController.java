@@ -14,6 +14,7 @@ import com.tek.snip.man.FileManager;
 import com.tek.snip.man.SnipManager;
 import com.tek.snip.objects.MenuOption;
 import com.tek.snip.objects.Snip;
+import com.tek.snip.ui.editor.ImageEditor;
 import com.tek.snip.util.PopupBuilder;
 import com.tek.snip.util.Util;
 
@@ -93,7 +94,7 @@ public class MainController {
 	
 	public ArrayList<ImageView> images = new ArrayList<ImageView>();
 	
-	public ImageView process(BufferedImage image) {
+	public ImageView process(BufferedImage image, Snip snip) {
 		ImageView view = new ImageView(SwingFXUtils.toFXImage(image, null));
 		view.setFitWidth(130);
 		view.setFitHeight(130);
@@ -130,6 +131,21 @@ public class MainController {
 			Util.showImage(view.getImage());
 		};
 		
+		Runnable edit = () -> {
+			double id = snip.getId();
+			
+			BufferedImage fromImage = SwingFXUtils.fromFXImage(view.getImage(), null);
+			BufferedImage editImage = ImageEditor.edit(fromImage);
+			
+			Snip snipperooni = SnipManager.getInstance().getSnipById(id);
+			
+			if(snipperooni != null) {
+				snipperooni.setImage(editImage);
+			}
+			
+			updateSnips();
+		};
+		
 		Runnable remove = () -> {
 			SnipManager.getInstance().remove(view.getImage());
 		};
@@ -153,7 +169,7 @@ public class MainController {
 		});
 		
 		view.setOnContextMenuRequested(e -> {
-			Util.showContextMenu(view, new MenuOption("Save", save), new MenuOption("Upload", upload), new MenuOption("Print", print), new MenuOption("View Image", show), new MenuOption("Remove", remove));
+			Util.showContextMenu(view, new MenuOption("Save", save), new MenuOption("Upload", upload), new MenuOption("Print", print), new MenuOption("View Image", show), new MenuOption("Edit", edit), new MenuOption("Remove", remove));
 			e.consume();
 		});
 		
@@ -180,7 +196,7 @@ public class MainController {
 				VBox.setMargin(hbox, new Insets(0, 5, 10, 5));
 			}
 			
-			ImageView image = process(snip.getImage());
+			ImageView image = process(snip.getImage(), snip);
 			
 			hbox.getChildren().add(image);
 			images.add(image);

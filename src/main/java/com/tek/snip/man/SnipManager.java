@@ -51,6 +51,14 @@ public class SnipManager {
 		});
 	}
 	
+	public Snip getSnipById(double id) {
+		for(Snip snip : loaded) {
+			if(snip.getId() == id) return snip;
+		}
+		
+		return null;
+	}
+	
 	public ArrayList<Snip> getLoaded() {
 		return loaded;
 	}
